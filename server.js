@@ -1,21 +1,34 @@
 import express from 'express'
 
-const app = express()
 
+import pkg from '@prisma/client';
+const { PrismaClient } = pkg;
+const prisma = new PrismaClient();
+
+const app = express()
 app.use(express.json())
 
-const usuarios = []
-
 //CRIAR AS ROTAS
-app.get('/cadastro', (req, res)=> {
+app.get('/cadastro',async (req, res)=> {
     //res.send('deu bom no get ;)')
     //res.json(usuarios)
-    res.status(200).json(usuarios)
+
+    const lista_usuarios = await prisma.usuario.findMany()
+    res.status(200).json(lista_usuarios)
+    
 })
-app.post('/cadastro',  (req, res)=> {
-    //console.log(req.body)
+app.post('/cadastro', async  (req, res)=> {
+    /* console.log(req.body)
     usuarios.push(req.body)
-    //res.send('deu bom no post <3')
+    res.send('deu bom no post <3') */
+
+    await prisma.usuario.create({
+        data:{
+            email: req.body.email,
+            nome: req.body.nome,
+            idade: req.body.idade
+        }
+    })
     res.status(201).json(req.body)
 })
 
