@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model Usuario {
-  id      Int   @id @default(auto()) @map("_id") @db.ObjectId
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   email   String   @unique
   nome    String
   idade   String
